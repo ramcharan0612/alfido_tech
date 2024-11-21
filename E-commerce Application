@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // Initialize the system
+        Scanner sc = new Scanner(System.in);
+        User loggedInUser = null;
+        CartManager cartManager = new CartManager();
+
+        // Example: User login
+        System.out.print("Enter username: ");
+        String username = sc.nextLine();
+        System.out.print("Enter password: ");
+        String password = sc.nextLine();
+
+        loggedInUser = UserManager.login(username, password);
+        if (loggedInUser != null) {
+            System.out.println("Welcome " + loggedInUser.getUsername());
+
+            // View products
+            List<Product> products = ProductManager.getAllProducts();
+            System.out.println("Products available:");
+            for (Product product : products) {
+                System.out.println(product.getProductId() + ": " + product.getName() + " - $" + product.getPrice());
+            }
+
+            // Add to cart
+            System.out.print("Enter product ID to add to cart: ");
+            int productId = sc.nextInt();
+            Product product = product.getProductById(productId);
+            if (product != null) {
+                System.out.print("Enter quantity: ");
+                int quantity = sc.nextInt();
+                cartManager.addToCart(product, quantity);
+            }
+
+            // Place order
+            System.out.println("Total: $" + cartManager.calculateTotal());
+            System.out.print("Do you want to place the order? (yes/no): ");
+            String choice = sc.next();
+            if (choice.equalsIgnoreCase("yes")) {
+                System.out.println("Order placed successfully!");
+            }
+        } else {
+            System.out.println("Invalid username or password!");
+        }
+
+        sc.close();
+    }
+}
