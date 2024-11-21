@@ -1,0 +1,99 @@
+import java.util.Scanner;
+
+class BankAccount {
+    private String accountHolder;
+    private double balance;
+
+    // Constructor to initialize the account
+    public BankAccount(String accountHolder, double initialBalance) {
+        this.accountHolder = accountHolder;
+        this.balance = initialBalance;
+        System.out.printf("Account created for %s with an initial balance of $%.2f.%n", accountHolder, balance);
+    }
+
+    // Deposit method
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Deposit amount must be positive.");
+        } else {
+            balance += amount;
+            System.out.printf("$%.2f deposited. New balance: $%.2f.%n", amount, balance);
+        }
+    }
+
+    // Withdrawal method
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Withdrawal amount must be positive.");
+        } else if (amount > balance) {
+            System.out.printf("Insufficient balance! Your current balance is $%.2f.%n", balance);
+        } else {
+            balance -= amount;
+            System.out.printf("$%.2f withdrawn. New balance: $%.2f.%n", amount, balance);
+        }
+    }
+
+    // Method to display the current balance
+    public void checkBalance() {
+        System.out.printf("Current balance: $%.2f.%n", balance);
+    }
+}
+
+public class BankingSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create an account
+        System.out.println("Welcome to the banking system!");
+        
+        // Read the account holder's name
+        System.out.print("Enter the account holder's name: ");
+        String name = scanner.nextLine();  // This will work correctly now
+
+        // Read the initial balance
+        System.out.print("Enter the initial balance: ");
+        double initialBalance = scanner.nextDouble();
+        
+        // Consume the newline left by nextDouble()
+        scanner.nextLine();  // This is important to clear the buffer
+
+        // Create the bank account with the provided name and initial balance
+        BankAccount account = new BankAccount(name, initialBalance);
+
+        // Menu-driven interface
+        while (true) {
+            System.out.println("\nOptions:");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character after reading an integer
+
+            switch (choice) {
+                case 1: // Deposit
+                    System.out.print("Enter deposit amount: ");
+                    double depositAmount = scanner.nextDouble();
+                    scanner.nextLine(); // Consume the newline character after reading a number
+                    account.deposit(depositAmount);
+                    break;
+                case 2: // Withdraw
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawalAmount = scanner.nextDouble();
+                    scanner.nextLine(); // Consume the newline character
+                    account.withdraw(withdrawalAmount);
+                    break;
+                case 3: // Check balance
+                    account.checkBalance();
+                    break;
+                case 4: // Exit
+                    System.out.println("Thank you for using the banking system. Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
